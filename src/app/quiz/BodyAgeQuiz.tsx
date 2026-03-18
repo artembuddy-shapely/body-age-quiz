@@ -14,8 +14,9 @@ import QuizScreen from "@/components/quiz/QuizScreen";
 import PaceOfAgingScreen from "@/components/quiz/PaceOfAgingScreen";
 import ProcessingScreen from "@/components/quiz/ProcessingScreen";
 import SummaryScreen from "@/components/quiz/SummaryScreen";
+import LandingScreen from "@/components/quiz/LandingScreen";
 
-type Phase = "quiz" | "pace" | "processing" | "summary";
+type Phase = "landing" | "quiz" | "pace" | "processing" | "summary";
 
 export default function BodyAgeQuiz() {
   const [screen, setScreen] = useState(0);
@@ -23,7 +24,7 @@ export default function BodyAgeQuiz() {
   const [multiSelect, setMultiSelect] = useState<Record<string, string[]>>({});
   const [bodyAge, setBodyAge] = useState<number | null>(null);
   const [reductions, setReductions] = useState<Reductions>({});
-  const [phase, setPhase] = useState<Phase>("quiz");
+  const [phase, setPhase] = useState<Phase>("landing");
   const [slideDir, setSlideDir] = useState("in");
   const totalScreens = BLOCKS.length * 4;
 
@@ -44,6 +45,13 @@ export default function BodyAgeQuiz() {
     }, 250);
   }, [screen, totalScreens]);
 
+  // Age selected on landing → pre-fill the age answer, skip to recovery question (screen 1)
+  const handleLandingAgeSelect = (label: string, value: number) => {
+    setAnswers({ age: { label, value, score: 0 } });
+    setScreen(1);
+    setPhase("quiz");
+  };
+
   const goBack = useCallback(() => {
     if (phase === "summary") {
       setPhase("pace");
@@ -52,6 +60,13 @@ export default function BodyAgeQuiz() {
     if (phase === "pace") {
       setPhase("quiz");
       setScreen(totalScreens - 1);
+      return;
+    }
+    // First quiz question (recovery) → back to landing
+    if (phase === "quiz" && screen === 1) {
+      setPhase("landing");
+      setAnswers({});
+      setScreen(0);
       return;
     }
     if (screen > 0) {
@@ -115,6 +130,10 @@ export default function BodyAgeQuiz() {
   };
 
   const actualAge = Math.round(answers["age"]?.value || 55);
+
+  if (phase === "landing") {
+    return <LandingScreen onAgeSelect={handleLandingAgeSelect} />;
+  }
 
   if (phase === "pace") {
     return (
