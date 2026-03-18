@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 
-// Place your hero photo at /public/hero.jpg
-// Recommended: portrait-oriented, woman visible from head to waist, transparent/cream background
+// Hero photo: /public/hero.png
 
 const AGE_RANGES = [
   { label: "40-49", value: 44.5 },
@@ -76,14 +75,13 @@ export default function LandingScreen({ onAgeSelect }: LandingScreenProps) {
             bottom: 0,
             width: "62%",
             zIndex: 1,
-            background: "#E8E0D5", // fallback while image loads
           }}
         >
           <Image
-            src="/hero.jpg"
+            src="/hero.png"
             alt="Woman smiling"
             fill
-            style={{ objectFit: "cover", objectPosition: "top center" }}
+            style={{ objectFit: "contain", objectPosition: "top center" }}
             priority
           />
         </div>
