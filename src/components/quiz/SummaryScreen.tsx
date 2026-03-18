@@ -10,9 +10,10 @@ interface SummaryScreenProps {
   reductions: Reductions;
   actualAge: number;
   onBack: () => void;
+  onContinue: () => void;
 }
 
-export default function SummaryScreen({ bodyAge, reductions, actualAge, onBack }: SummaryScreenProps) {
+export default function SummaryScreen({ bodyAge, reductions, actualAge, onBack, onContinue }: SummaryScreenProps) {
   return (
     <div style={styles.summaryWrap}>
       <div style={{ ...styles.backRow, marginBottom: 0, padding: "0 0 12px" }}>
@@ -91,7 +92,7 @@ export default function SummaryScreen({ bodyAge, reductions, actualAge, onBack }
         })}
       </div>
 
-      <button style={styles.ctaButton} onClick={() => {}}>
+      <button style={styles.ctaButton} onClick={onContinue}>
         Start My Body Age Reset
       </button>
       <p style={styles.ctaSubtext}>Join 24,000+ women who reversed their body age</p>

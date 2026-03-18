@@ -15,8 +15,9 @@ import PaceOfAgingScreen from "@/components/quiz/PaceOfAgingScreen";
 import ProcessingScreen from "@/components/quiz/ProcessingScreen";
 import SummaryScreen from "@/components/quiz/SummaryScreen";
 import LandingScreen from "@/components/quiz/LandingScreen";
+import PaymentScreen from "@/components/quiz/PaymentScreen";
 
-type Phase = "landing" | "quiz" | "pace" | "processing" | "summary";
+type Phase = "landing" | "quiz" | "pace" | "processing" | "summary" | "payment";
 
 export default function BodyAgeQuiz() {
   const [screen, setScreen] = useState(0);
@@ -168,8 +169,22 @@ export default function BodyAgeQuiz() {
           reductions={reductions}
           actualAge={actualAge}
           onBack={goBack}
+          onContinue={() => setPhase("payment")}
         />
       </div>
+    );
+  }
+
+  if (phase === "payment") {
+    return (
+      <>
+        <style>{keyframes}</style>
+        <PaymentScreen
+          bodyAge={bodyAge!}
+          actualAge={actualAge}
+          onBack={() => setPhase("summary")}
+        />
+      </>
     );
   }
 
